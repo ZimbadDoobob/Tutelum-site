@@ -1,0 +1,31 @@
+/* Extra styles for individual guide pages. Link it after style.css. */
+.guide h1{font-size:1rem;font-weight:normal;color:var(--bright);margin:0 0 .25rem}
+.guide h1::before{content:"# ";color:var(--dim)}
+.guide h2::before{content:"## ";color:var(--dim)}
+.guide h3{font-size:1rem;font-weight:normal;color:var(--amber);margin:1.25rem 0 .25rem}
+.guide h3::before{content:"### ";color:var(--dim)}
+.guide .byline{color:var(--dim);font-size:.875rem;margin:0 0 1rem}
+.guide p a,.guide li a,.guide td a{text-decoration:underline;text-underline-offset:3px}
+.guide strong{color:var(--bright);font-weight:normal;text-decoration:underline;text-underline-offset:3px}
+.guide em{font-style:italic}
+.guide code{background:rgba(255,176,0,.12);padding:0 .3em}
+.guide pre{background:rgba(0,0,0,.35);border:1px solid var(--rule);padding:.75rem 1rem;overflow-x:auto;margin:.75rem 0;line-height:1.45}
+.guide pre code{background:none;padding:0}
+.guide kbd{border:1px solid var(--dim);padding:0 .35em;font:inherit}
+.guide ol{counter-reset:step;list-style:none;margin:.5rem 0;padding:0}
+.guide ol>li{counter-increment:step;position:relative;padding-left:3ch;margin:.5rem 0}
+.guide ol>li::before{content:counter(step) ".";position:absolute;left:0;color:var(--dim)}
+.guide ul{list-style:none;margin:.5rem 0;padding:0}
+.guide ul>li{position:relative;padding-left:3ch;margin:.25rem 0}
+.guide ul>li::before{content:"-";position:absolute;left:1ch;color:var(--dim)}
+.guide li>ul{margin:.25rem 0 .5rem}
+.guide .note{border:1px dashed var(--amber);padding:.5rem .9rem;margin:1rem 0}
+.guide .note strong{text-decoration:none}
+.guide blockquote{margin:1rem 0;padding:0 0 0 2ch;color:var(--dim)}
+.guide blockquote p::before{content:"> "}
+.guide .table-wrap{overflow-x:auto;margin:1rem 0}
+.guide table{border-collapse:collapse;width:100%;font-size:.9375rem}
+.guide th,.guide td{text-align:left;vertical-align:top;padding:.35rem 1rem .35rem 0;border-bottom:1px dashed var(--rule)}
+.guide th{color:var(--bright);font-weight:normal;border-bottom:1px solid var(--amber)}
+.guide hr{border:0;border-top:1px dashed var(--rule);margin:1.5rem 0}
+.guide .back{display:inline-block;margin-bottom:1rem}

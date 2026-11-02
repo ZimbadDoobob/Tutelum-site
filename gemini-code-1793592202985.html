@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tutelum.tech: enable a hardware security key [alt]</title>
+  <meta name="description" content="Add a physical security key to your most important accounts, with a backup.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="guide.css">
+  <style>
+    /* Vertical Side Counter */
+    .vertical-counter {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-family: monospace;
+      font-size: 14px;
+      letter-spacing: 2px;
+      padding: 12px 6px;
+      border: 1px solid currentColor;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      user-select: none;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    /* Interactive ASCII Glyphs */
+    .secret-glyph {
+      cursor: pointer;
+      font-weight: bold;
+      transition: color 0.15s ease, opacity 0.15s ease;
+    }
+    .secret-glyph:hover {
+      opacity: 0.7;
+      text-shadow: 0 0 6px currentColor;
+    }
+    .secret-glyph:active {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed Vertical Counter -->
+  <div class="vertical-counter" id="sideCounter">
+    ALT SEQUENCE: <span id="counterValue">00</span>/05
+  </div>
+
+  <div class="term">
+    <header>
+      <p class="brand"><a href="index.html">tutelum.tech</a></p>
+      <nav aria-label="Site">
+        <ul>
+          <li><a href="projects.html">projects</a></li>
+          <li><a href="guides.html" aria-current="page">guides</a></li>
+          <li><a href="thoughts.html">intrusive thoughts</a></li>
+          <li><a href="contact.html">contact</a></li>
+          <li><a href="about.html">?</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="guide">
+      <a class="back" href="guides.html">&lt; back to guides</a>
+
+      <h1>enable-a-hardware-security-key</h1>
+      <p class="byline">updated 2026-11-01, about 20 minutes[cite: 1]</p>
+
+      <p class="note"><strong>goal:</strong><pre><code>
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│                            . - ~ ~ ~ - .   _..._                            │
+│                        . '<span class="secret-glyph" data-index="3">S</span>           ' ./.--._\.                        │
+│                      ,       _.-''''-._    \    /                           │
+│                     ,    _.-'    <span class="secret-glyph" data-index="5">N</span>     `-_  `--'  ,                         │
+│                    ,   .'    _..----.._    `.   ,                         │
+│                   ,   /    /'   __   `\    \   ,                          │
+│                   ,  |    |    /  \    |    |  ,                         │
+│                   ,  |    |   | <span class="secret-glyph" data-index="2">👁️</span> |   |    |  ,                         │
+│                   ,   \    \   \__/   /    /   ,                          │
+│                    ,   `.   `-.____<span class="secret-glyph" data-index="4">K</span>.-'    .'   ,                         │
+│                     ,    `-.__________.-'    ,                          │
+│                      ,         [<span class="secret-glyph" data-index="1">Ω</span>]         ,                            │
+│                        ,                 , '                                │
+│                          ` - , _ _ _ , - '                                  │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+
+      <h2>what you need</h2>
+      <ul>
+        <li>two hardware keys that support FIDO2 or WebAuthn: one primary, one backup[cite: 1]</li>
+        <li>your password manager, open and unlocked[cite: 1]</li>
+        <li>a list of accounts to protect, starting with:
+          <ul>
+            <li>your primary email[cite: 1]</li>
+            <li>your password manager[cite: 1]</li>
+            <li>your phone carrier or Apple, Google, or Microsoft account[cite: 1]</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>steps</h2>
+      <ol>
+        <li><strong>Start with email.</strong> Whoever controls your email can usually reset every other password, so protect it first.[cite: 1]</li>
+        <li>Open the account’s security settings and look for <em>security key</em>, <em>passkey</em>, or <em>two-step verification</em>. The wording differs between services.[cite: 1]</li>
+        <li>Choose to add a key. When asked, insert it or tap it, then give it a name such as <code>primary-keyring</code>.[cite: 1]</li>
+        <li>Repeat with the second key and name it <code>backup-safe</code>. Store it somewhere other than your daily key.[cite: 1]</li>
+        <li>Save any recovery codes the service offers into your password manager.[cite: 1]</li>
+        <li>Test it: sign out, then sign back in using the key. Press <kbd>Esc</kbd> if a prompt gets stuck and try again.[cite: 1]</li>
+      </ol>
+
+      <h2>using a key for ssh</h2>
+      <p>If you log in to servers over SSH, you can make a key that only works while the hardware key is plugged in. This needs OpenSSH 8.2 or newer.[cite: 1]</p>
+      <pre><code>ssh-keygen -t ed25519-sk -C "primary-keyring"
+cat ~/.ssh/id_ed25519_sk.pub</code></pre>
+      <p>Add the printed public key to your server’s <code>authorized_keys</code> file, then test a login before closing your current session.[cite: 1]</p>
+
+      <h3>why two keys</h3>
+      <blockquote>
+        <p>If losing one key would lock you out, that key is a single point of failure.[cite: 1]</p>
+      </blockquote>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>key[cite: 1]</th>
+              <th>lives[cite: 1]</th>
+              <th>used for[cite: 1]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>primary[cite: 1]</td>
+              <td>on your keyring[cite: 1]</td>
+              <td>daily sign-ins[cite: 1]</td>
+            </tr>
+            <tr>
+              <td>backup[cite: 1]</td>
+              <td>stored separately[cite: 1]</td>
+              <td>recovery only[cite: 1]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>how to undo it</h2>
+      <p>Open each account’s security settings and remove the key. Before you do, confirm that another sign-in method still works, or you may lock yourself out.[cite: 1]</p>
+
+      <hr>
+      <p>related: <a href="guides.html">all guides</a>[cite: 1]</p>
+    </main>
+
+    <footer class="status">
+      guide <span class="cursor" aria-hidden="true"></span>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const STORAGE_STEP_KEY = 'tutelum_alt_glyph_step';
+      const STORAGE_COMPLETED_KEY = 'tutelum_alt_glyph_completed';
+      
+      let currentStep = parseInt(localStorage.getItem(STORAGE_STEP_KEY) || '1', 10);
+      const isCompleted = localStorage.getItem(STORAGE_COMPLETED_KEY) === 'true';
+
+      const counterEl = document.getElementById('counterValue');
+      const counterContainer = document.getElementById('sideCounter');
+      const glyphs = document.querySelectorAll('.secret-glyph');
+
+      function updateUI() {
+        if (isCompleted) {
+          counterContainer.style.color = '#00ff00';
+          counterContainer.style.borderColor = '#00ff00';
+          counterEl.textContent = '05';
+          return;
+        }
+        const progress = Math.min(currentStep - 1, 5);
+        counterEl.textContent = progress.toString().padStart(2, '0');
+      }
+
+      updateUI();
+
+      glyphs.forEach(glyph => {
+        glyph.addEventListener('click', () => {
+          if (isCompleted) return;
+
+          const clickedIndex = parseInt(glyph.getAttribute('data-index'), 10);
+
+          if (clickedIndex === currentStep) {
+            currentStep++;
+            localStorage.setItem(STORAGE_STEP_KEY, currentStep);
+
+            if (currentStep > 5) {
+              localStorage.setItem(STORAGE_COMPLETED_KEY, 'true');
+              triggerSuccessState();
+            } else {
+              updateUI();
+            }
+          } else {
+            triggerResetState();
+          }
+        });
+      });
+
+      function triggerResetState() {
+        currentStep = 1;
+        localStorage.setItem(STORAGE_STEP_KEY, '1');
+        
+        counterContainer.style.color = '#ff4444';
+        counterContainer.style.borderColor = '#ff4444';
+        counterEl.textContent = 'ERR';
+
+        setTimeout(() => {
+          counterContainer.style.color = '';
+          counterContainer.style.borderColor = '';
+          updateUI();
+        }, 800);
+      }
+
+      function triggerSuccessState() {
+        counterContainer.style.color = '#00ff00';
+        counterContainer.style.borderColor = '#00ff00';
+        counterEl.textContent = 'OK';
+      }
+    });
+  </script>
+</body>
+</html>

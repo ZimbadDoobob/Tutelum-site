@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tutelum.tech: enable a hardware security key</title>
+  <meta name="description" content="Add a physical security key to your most important accounts, with a backup.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="guide.css">
+</head>
+<body>
+  <div class="term">
+    <header>
+      <p class="brand"><a href="index.html">tutelum.tech</a></p>
+      <nav aria-label="Site">
+        <ul>
+          <li><a href="projects.html">projects</a></li>
+          <li><a href="guides.html" aria-current="page">guides</a></li>
+          <li><a href="thoughts.html">intrusive thoughts</a></li>
+          <li><a href="contact.html">contact</a></li>
+          <li><a href="about.html">?</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="guide">
+      <a class="back" href="guides.html">&lt; back to guides</a>
+
+      <h1>enable-a-hardware-security-key</h1>
+      <p class="byline">updated 2026-11-01, about 20 minutes</p>
+
+      <p class="note"><strong>goal:</strong><pre><code>
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            :: THE SNAKE PIT ::                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│                        . - ~ ~ ~ - .   _..._                                │
+│                    . '             ' ./.--._\.                              │
+│                  ,       _.-''''-._    \    /                               │
+│                 ,    _.-'          `-_  `--'  ,                             │
+│                ,   .'    _..----.._    `.   ,                              │
+│               ,   /    /'   __   `\    \   ,   ( Ouroboros Infinitum )     │
+│               ,  |    |    /  \    |    |  ,                            │
+│               ,  |    |   | 👁️ |   |    |  ,  <-- [The Endless Devour]   │
+│               ,   \    \   \__/   /    /   ,                              │
+│                ,   `.   `-.____.-'   .'   ,                               │
+│                 ,    `-.__________.-'    ,                                │
+│                  ,         [Ω]         ,                                    │
+│                    ,                 , '                                    │
+│                      ` - , _ _ _ , - '                                     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+
+      <h2>what you need</h2>
+      <ul>
+        <li>two hardware keys that support FIDO2 or WebAuthn: one primary, one backup</li>
+        <li>your password manager, open and unlocked</li>
+        <li>a list of accounts to protect, starting with:
+          <ul>
+            <li>your primary email</li>
+            <li>your password manager</li>
+            <li>your phone carrier or Apple, Google, or Microsoft account</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h2>steps</h2>
+      <ol>
+        <li><strong>Start with email.</strong> Whoever controls your email can usually reset every other password, so protect it first.</li>
+        <li>Open the account’s security settings and look for <em>security key</em>, <em>passkey</em>, or <em>two-step verification</em>. The wording differs between services.</li>
+        <li>Choose to add a key. When asked, insert it or tap it, then give it a name such as <code>primary-keyring</code>.</li>
+        <li>Repeat with the second key and name it <code>backup-safe</code>. Store it somewhere other than your daily key.</li>
+        <li>Save any recovery codes the service offers into your password manager.</li>
+        <li>Test it: sign out, then sign back in using the key. Press <kbd>Esc</kbd> if a prompt gets stuck and try again.</li>
+      </ol>
+
+      <h2>using a key for ssh</h2>
+      <p>If you log in to servers over SSH, you can make a key that only works while the hardware key is plugged in. This needs OpenSSH 8.2 or newer.</p>
+      <pre><code>ssh-keygen -t ed25519-sk -C "primary-keyring"
+cat ~/.ssh/id_ed25519_sk.pub</code></pre>
+      <p>Add the printed public key to your server’s <code>authorized_keys</code> file, then test a login before closing your current session.</p>
+
+      <h3>why two keys</h3>
+      <blockquote>
+        <p>If losing one key would lock you out, that key is a single point of failure.</p>
+      </blockquote>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>key</th>
+              <th>lives</th>
+              <th>used for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>primary</td>
+              <td>on your keyring</td>
+              <td>daily sign-ins</td>
+            </tr>
+            <tr>
+              <td>backup</td>
+              <td>stored separately</td>
+              <td>recovery only</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>how to undo it</h2>
+      <p>Open each account’s security settings and remove the key. Before you do, confirm that another sign-in method still works, or you may lock yourself out.</p>
+
+      <hr>
+      <p>related: <a href="guides.html">all guides</a></p>
+    </main>
+
+    <footer class="status">
+      guide <span class="cursor" aria-hidden="true"></span>
+    </footer>
+  </div>
+</body>
+</html>
